@@ -228,6 +228,26 @@
     border: 1px dashed rgba(255,255,255,.2); border-radius: 8px; padding: 4px 10px;
   }
 
+  .stats-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 9px;
+    margin: 0 0 clamp(10px, 1.6vh, 16px);
+  }
+  .stat-card {
+    background: rgba(56,189,248,.055); border: 1px solid rgba(56,189,248,.22);
+    border-radius: 13px; padding: 9px 13px;
+  }
+  .stat-val {
+    font-family: 'Unbounded', sans-serif; font-size: clamp(.98rem, 1.25vw, 1.24rem);
+    font-weight: 700; color: var(--sky); line-height: 1.18;
+  }
+  .stat-lbl {
+    font-size: clamp(.76rem, .86vw, .85rem); font-weight: 700; color: var(--white);
+    margin-top: 3px; line-height: 1.25;
+  }
+  .stat-src {
+    font-size: .69rem; font-weight: 500; color: var(--muted); margin-top: 2px; line-height: 1.2;
+  }
+
   /* ---------- Automatic Staggered Animations ---------- */
   .slide .kicker,
   .slide h2,
@@ -393,6 +413,11 @@
     .panel li { font-size: 0.98rem; line-height: 1.38; margin-bottom: 6px; }
     .chips { margin-bottom: 8px; gap: 5px; }
     .chip { font-size: 0.78rem; padding: 3px 8px; }
+    .stats-grid { gap: 6px; margin-bottom: 10px; }
+    .stat-card { padding: 6px 10px; border-radius: 10px; }
+    .stat-val { font-size: 0.94rem; }
+    .stat-lbl { font-size: 0.73rem; }
+    .stat-src { font-size: 0.63rem; }
     .label { margin-bottom: 8px; }
     .arrow { width: 42px; height: 42px; font-size: 1.15rem; }
     .shot-preview { height: 75px; margin-bottom: 8px; }
@@ -404,6 +429,10 @@
     .panel li { font-size: 0.86rem; line-height: 1.3; margin-bottom: 4px; }
     .kicker { margin-bottom: 2px; }
     .shot-preview { height: 55px; }
+    .stats-grid { gap: 5px; margin-bottom: 6px; }
+    .stat-card { padding: 4px 8px; }
+    .stat-val { font-size: 0.84rem; }
+    .stat-lbl { font-size: 0.68rem; }
   }
   @media (max-width: 900px) {
     .compare { grid-template-columns: 1fr; }
@@ -766,19 +795,42 @@ const SLIDES = [
     "imagePos": "center"
   },
   {
-    "tag": "Мова",
+    "tag": "Мова та ринок",
     "title": "Англійська версія сайту та кабінету",
+    "problemLabel": "Аналітика ринку та кого втрачаємо",
+    "ideaLabel": "Ідея · Локалізація та залучення капіталу",
+    "stats": [
+      {
+        "val": "~354 тис.",
+        "lbl": "іноземців легально проживають в Україні",
+        "src": "ДМС України: 306 тис. постійна + 48 тис. тимчасова посвідка"
+      },
+      {
+        "val": "22 тис. ФОП",
+        "lbl": "та 20 тис.+ іноземців із е-посвідкою в Дії",
+        "src": "Мінцифра / Опендатабот: вже мають РНОКПП, Дія.Підпис і рахунки"
+      },
+      {
+        "val": "17,9 млрд ₴",
+        "lbl": "вже інвестовано нерезидентами в ОВДП",
+        "src": "НБУ / Мінфін: інвестори з 25+ країн (93% — у гривневі папери)"
+      },
+      {
+        "val": "16 тис.+",
+        "lbl": "іноземців у Силах оборони + 1 500+ місій",
+        "src": "Дипломати, ООН, міжнародні NGO та ІТ-експати з високим доходом"
+      }
+    ],
     "problem": [
-      "Сайт та кабінет доступні <strong>лише українською мовою</strong>",
-      "В Україні постійно проживає <strong>понад 300 000 іноземців (~1% населення)</strong> — платоспроможна аудиторія з доходами у валюті",
-      "Після 2022 року зросла кількість <strong>експатів, дипломатів, волонтерів та інструкторів</strong>, які прагнуть інвестувати в Україну",
-      "Без англійської мови сервіс Inzhur стає для них <strong>слабодоступним і створює бар'єр довіри</strong>"
+      "<strong>Втрачаємо готових до KYC резидентів</strong>: Inzhur уже має форми CRS/FATCA та BankID/Дія, але відсікає 22 тис. іноземних ФОПів та експатів мовним бар’єром на вході",
+      "<strong>Віддаємо капітал конкурентам з EN-інтерфейсом</strong>: Monobank, Privat24 та брокер ICU вже перехоплюють гривневі заощадження іноземців у свої ОВДП та депозити",
+      "<strong>Втрачаємо іноземних добровольців, дипломатів та сім’ї експатів</strong>: лояльна аудиторія для REIT, Energy та імпакт-фондів, де автопереклад браузера руйнує фінансову довіру"
     ],
     "idea": [
-      "<strong>Повноцінна англійська версія</strong> сайту, карток фондів та особистого кабінету",
-      "<strong>Перемикач мови (UA / EN)</strong> у хедері та мобільному меню",
-      "Англомовний <strong>онбординг, калькулятор та юридичний FAQ</strong> для іноземних резидентів",
-      "Залучення <strong>міжнародного приватного капіталу</strong> у відбудову та економіку України"
+      "<strong>Повноцінна EN-версія сайту та кабінету</strong> з помітним перемикачем мови <strong>UA / EN</strong> у хедері та мобільному меню",
+      "<strong>Окремий лендінг «Invest in Ukraine»</strong>: зрозуміле пояснення формату REIT (вхід від 11 ₴ замість купівлі нерухомості за $50k+), ОВДП та захисту активів",
+      "<strong>Англомовний KYC-онбординг</strong>: покроковий гайд для власників е-посвідки в Дії та іноземців із РНОКПП + англомовні податкові довідки",
+      "<strong>Фокус на зрозумілі іноземцям інструменти</strong>: класичні комерційні REIT, <strong>Inzhur Energy</strong>, гривневі/валютні ОВДП та інвестиції у відбудову"
     ]
   },
   {
@@ -822,6 +874,7 @@ SLIDES.forEach((s, i) => {
       <div class="start-hint"><kbd>O</kbd> огляд усіх слайдів · <kbd>Home</kbd> на перший слайд · <kbd>←</kbd> повернутися назад</div>`;
   } else {
     const chips = s.chips ? `<div class="chips">${s.chips.map(c => `<span class="chip">${c}</span>`).join('')}</div>` : '';
+    const statsHTML = s.stats ? `<div class="stats-grid">${s.stats.map(st => `<div class="stat-card"><div class="stat-val">${st.val}</div><div class="stat-lbl">${st.lbl}</div><div class="stat-src">${st.src}</div></div>`).join('')}</div>` : '';
     
     let shotHTML = '';
     let pillHTML = '';
@@ -858,6 +911,7 @@ SLIDES.forEach((s, i) => {
         <div class="panel problem">
           <div class="label">${s.problemLabel || 'Як зараз'}</div>
           ${s.shotPlacement !== 'idea' ? shotHTML : ''}
+          ${statsHTML}
           ${chips}
           ${listHTML(s.problem, 'problem', 0.20)}
         </div>
