@@ -685,11 +685,14 @@ const SLIDES = [
   {
     "tag": "Гейміфікація",
     "title": "Гейміфікація досвіду інвестора",
+    "shotPlacement": "idea",
+    "problemLabel": "Як зараз (As-Is)",
+    "ideaLabel": "Пропозиція (To-Be)",
     "images": [
       {
         "url": "images/shot_inzhur_achievements_list.png",
         "label": "1. Каталог ачівок",
-        "caption": "1. Пропозиція: екран «Досягнення» в Inzhur із колекціями (Старт, REIT, Energy, MilTech, ОВДП, Знання, Спільнота)",
+        "caption": "1. Пропозиція: екран «Досягнення» в Inzhur із маскотом-биком та колекціями ачівок",
         "pos": "top center"
       },
       {
@@ -716,7 +719,6 @@ const SLIDES = [
       "Між щомісячними виплатами дивідендів у інвестора <strong>немає тригерів заходити в застосунок</strong>",
       "Відсутнє відчуття <strong>ігрового прогресу та персональних досягнень</strong> на шляху до накопичення капіталу"
     ],
-    "ideaLabel": "Пропозиція · Концепт гейміфікації Inzhur",
     "idea": [
       "<strong>Каталог досягнень за колекціями:</strong> тематичні набори («Старт», «Inzhur REIT», «Energy», «MilTech», «ОВДП», «Портфель і знання», «Спільнота»)",
       "<strong>«Шлях інвестора» для кожного фонду:</strong> лінійний прогрес із титулами (наприклад, <em>«Перша цеглина» → «Орендна платня» → «Рік оренди» → «Дивіденди в діло»</em>)",
@@ -854,14 +856,15 @@ SLIDES.forEach((s, i) => {
       <h2>${s.title}</h2>
       <div class="compare">
         <div class="panel problem">
-          <div class="label">Як зараз</div>
-          ${shotHTML}
+          <div class="label">${s.problemLabel || 'Як зараз'}</div>
+          ${s.shotPlacement !== 'idea' ? shotHTML : ''}
           ${chips}
           ${listHTML(s.problem, 'problem', 0.20)}
         </div>
         <div class="arrow">→</div>
         <div class="panel idea">
           <div class="label">${s.ideaLabel || 'Ідея'}</div>
+          ${s.shotPlacement === 'idea' ? shotHTML : ''}
           ${listHTML(s.idea, 'idea', 0.45)}
         </div>
       </div>`;
