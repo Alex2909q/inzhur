@@ -834,6 +834,45 @@ const SLIDES = [
     ]
   },
   {
+    "tag": "Поповнення рахунку",
+    "title": "Додавання способу поповнення через QR-код",
+    "problemLabel": "Як зараз",
+    "ideaLabel": "Пропозиція · Поповнення через QR",
+    "problemImages": [
+      {
+        "url": "images/shot_topup_current.jpg",
+        "label": "Як зараз: вибір лише з 4 банків",
+        "caption": "Як зараз в Inzhur: швидкий перехід доступний лише для 4 банків (monobank, Sense, ПриватБанк, VST bank), для решти — ручне копіювання IBAN",
+        "pos": "center 24%"
+      }
+    ],
+    "ideaImages": [
+      {
+        "url": "images/shot_topup_qr_tabs.jpg",
+        "label": "1. Вкладка «QR-код» у реквізитах",
+        "caption": "Пропозиція: окрема вкладка «QR-код» поруч із реквізитами IBAN для швидкого сканування будь-яким банком",
+        "pos": "center 35%"
+      },
+      {
+        "url": "images/shot_topup_qr_mono.jpg",
+        "label": "2. Референс: поповнення за QR",
+        "caption": "Референс (monobank): сканування QR-коду застосунком будь-якого банку + кнопки «Зберегти QR-код» та «Поділитись посиланням»",
+        "pos": "center 28%"
+      }
+    ],
+    "problem": [
+      "Швидке поповнення працює <strong>лише для 4 банків</strong> (monobank, Sense, ПриватБанк, VST bank)",
+      "Клієнтам інших банків (ПУМБ, Укрсиббанк, Райффайзен, Ощадбанк тощо) потрібно тиснути «Інший банк» і <strong>вручну копіювати IBAN та призначення платежу</strong>",
+      "При роботі з <strong>веб-кабінету на комп’ютері</strong> немає способу миттєво перенести платіж у мобільний банк на смартфоні"
+    ],
+    "idea": [
+      "Додати спосіб <strong>«Поповнити за QR-кодом»</strong> та вкладку <strong>QR-код</strong> поруч із IBAN у реквізитах",
+      "Генерувати <strong>платіжний QR за стандартом НБУ</strong> із вже зашитими IBAN, ЄДРПОУ та індивідуальним призначенням платежу — без ризику помилки",
+      "<strong>Миттєве поповнення з будь-якого банку України</strong>: достатньо відсканувати QR камерою з екрана ноутбука або у сканері банківського застосунку",
+      "Додати кнопки <strong>«Зберегти QR-код»</strong> та <strong>«Поділитись посиланням»</strong> для швидкої оплати на одному смартфоні"
+    ]
+  },
+  {
     "type": "closing",
     "tag": "Фінал",
     "title": "Дякую за увагу!"
@@ -851,6 +890,26 @@ function listHTML(items, kind, baseDelay) {
     const d = (baseDelay + idx * 0.08).toFixed(2);
     return `<li class="frag" data-kind="${kind}" style="--delay: ${d}s"><span class="mark">${mark}</span><span>${t}</span></li>`;
   }).join('') + '</ul>';
+}
+
+function getSlideImages(s) {
+  if (s.problemImages || s.ideaImages) {
+    return [...(s.problemImages || []), ...(s.ideaImages || [])];
+  }
+  return s.images || (s.image ? [{ url: s.image, label: s.imageLabel || 'Скріншот', caption: s.imageCaption || s.imageLabel, pos: s.imagePos || 'center' }] : []);
+}
+
+function buildShotsHTML(list, slideIdx, offsetIdx) {
+  if (!list || !list.length) return '';
+  const previews = list.map((img, idx) => `
+    <div class="shot-preview" onclick="openGallery(${slideIdx}, ${offsetIdx + idx})" title="Натисніть для збільшення">
+      <img src="${img.url}" alt="${img.label}" loading="lazy" style="object-position: ${img.pos || 'center'};">
+      <span class="shot-badge">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        ${img.label}
+      </span>
+    </div>`).join('');
+  return `<div class="shots-gallery" style="--cols: ${list.length}">${previews}</div>`;
 }
 
 SLIDES.forEach((s, i) => {
@@ -876,9 +935,10 @@ SLIDES.forEach((s, i) => {
     const chips = s.chips ? `<div class="chips">${s.chips.map(c => `<span class="chip">${c}</span>`).join('')}</div>` : '';
     const statsHTML = s.stats ? `<div class="stats-grid">${s.stats.map(st => `<div class="stat-card"><div class="stat-val">${st.val}</div><div class="stat-lbl">${st.lbl}</div><div class="stat-src">${st.src}</div></div>`).join('')}</div>` : '';
     
-    let shotHTML = '';
+    let problemShotHTML = '';
+    let ideaShotHTML = '';
     let pillHTML = '';
-    const imgList = s.images || (s.image ? [{ url: s.image, label: s.imageLabel || 'Скріншот', caption: s.imageCaption || s.imageLabel, pos: s.imagePos || 'center' }] : []);
+    const imgList = getSlideImages(s);
     
     if (imgList.length > 0) {
       const pillText = imgList.length > 1 ? `📷 ${imgList.length} скріншоти` : '📷 Скріншот';
@@ -888,16 +948,16 @@ SLIDES.forEach((s, i) => {
           ${pillText}
         </button>`;
 
-      const previews = imgList.map((img, idx) => `
-        <div class="shot-preview" onclick="openGallery(${i}, ${idx})" title="Натисніть для збільшення">
-          <img src="${img.url}" alt="${img.label}" loading="lazy" style="object-position: ${img.pos || 'center'};">
-          <span class="shot-badge">
-            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-            ${img.label}
-          </span>
-        </div>`).join('');
-
-      shotHTML = `<div class="shots-gallery" style="--cols: ${imgList.length}">${previews}</div>`;
+      if (s.problemImages || s.ideaImages) {
+        const pList = s.problemImages || [];
+        const iList = s.ideaImages || [];
+        problemShotHTML = buildShotsHTML(pList, i, 0);
+        ideaShotHTML = buildShotsHTML(iList, i, pList.length);
+      } else if (s.shotPlacement === 'idea') {
+        ideaShotHTML = buildShotsHTML(imgList, i, 0);
+      } else {
+        problemShotHTML = buildShotsHTML(imgList, i, 0);
+      }
     }
 
     html = `
@@ -910,7 +970,7 @@ SLIDES.forEach((s, i) => {
       <div class="compare">
         <div class="panel problem">
           <div class="label">${s.problemLabel || 'Як зараз'}</div>
-          ${s.shotPlacement !== 'idea' ? shotHTML : ''}
+          ${problemShotHTML}
           ${statsHTML}
           ${chips}
           ${listHTML(s.problem, 'problem', 0.20)}
@@ -918,7 +978,7 @@ SLIDES.forEach((s, i) => {
         <div class="arrow">→</div>
         <div class="panel idea">
           <div class="label">${s.ideaLabel || 'Ідея'}</div>
-          ${s.shotPlacement === 'idea' ? shotHTML : ''}
+          ${ideaShotHTML}
           ${listHTML(s.idea, 'idea', 0.45)}
         </div>
       </div>`;
@@ -958,7 +1018,7 @@ let currentGalleryIdx = 0;
 
 function openGallery(slideIdx, imgIdx) {
   const s = SLIDES[slideIdx];
-  const list = s.images || (s.image ? [{ url: s.image, label: s.imageLabel || 'Скріншот', caption: s.imageCaption || s.imageLabel }] : []);
+  const list = getSlideImages(s);
   if (!list.length) return;
   currentGallery = list;
   currentGalleryIdx = imgIdx || 0;
